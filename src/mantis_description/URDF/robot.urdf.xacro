@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<robot name="mantis" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="materials.urdf.xacro"/>
+  <xacro:include filename="inertia_macro.xacro"/>
+  <!-- <xacro:include filename="arm_ros2_control.xacro"/> -->
+  <xacro:include filename="gazebo.urdf.xacro"/>
+
+  <!-- //////////////////////////// BASE LINKS //////////////////////////// -->
+  <link name="world" />
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/mantis_main_base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.035" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.07"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.388" xyz="0 0 0.03" rpy="0 0 0" ixx="${5.96e5}" ixy="-18.574" ixz="-19.74" iyy="${5.756e5}" iyz="1696.552" izz="${8.891e5}"/>
+  </link>
+  
+  <link name="up_base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/up_base_mantis.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.022" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.035" radius="0.0625"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.495" xyz="0 0 0.028" rpy="0 0 0" ixx="${6.141e5}" ixy="5150.649" ixz="-24607.459" iyy="${6.011e5}" iyz="30749.791" izz="${8.193e5}"/>
+  </link>
+
+  <link name="up_base_servo_cover_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/servo_shield.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.01 0 0" rpy="0 ${pi/2.0} ${pi}"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.05" xyz="0 0 0" rpy="0 0 0" ixx="${1e4}" ixy="0" ixz="0" iyy="${1e4}" iyz="0" izz="${1e4}"/>
+  </link>
+
+  <link name="arm1_link">
+    <visual>
+      <origin xyz="0.0265 0 0" rpy="0 ${pi/2.0} 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/arm_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.28"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.627" xyz="0 0 0.15" rpy="0 ${pi/2.0} 0" ixx="${3.238e5}" ixy="-44.115" ixz="41507.895" iyy="${6.579e6}" iyz="9.216" izz="${6.419e6}"/>
+  </link>
+
+  <link name="arm2_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/arm_2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.025 0 0.0725" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.25"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.510" xyz="0 0 0.0725" rpy="0 ${pi/2.0} 0" ixx="${2.312e5}" ixy="195.38" ixz="${-2.509e5}" iyy="${2.831e6}" iyz="-370.924" izz="${2.733e6}"/>
+  </link>
+
+  <link name="wrist_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/wrist_robot.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.055" rpy="0 0 ${pi}"/>
+      <geometry>
+        <box size="0.05 0.05 0.11"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.619" xyz="0 0 0.05" rpy="0 ${pi/2.0} ${pi}" ixx="${3.834e5}" ixy="-523.087" ixz="-72999.132" iyy="${7.292e5}" iyz="-1006.802" izz="${6.056e5}"/>
+  </link>
+
+
+  <!-- //////////////////////////////////////////// JOINTS ///////////////////////////////////////////////  -->
+  <joint name="base_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <joint name="joint_1_up_base_to_base" type="revolute">
+    <parent link="base_link"/>
+    <child link="up_base_link"/>
+    <origin xyz="0 0 0.067" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-pi}" upper="${pi}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+  <joint name="base_servo_cover_to_up_base" type="fixed">
+    <parent link="up_base_link"/>
+    <child link="up_base_servo_cover_link"/>
+    <origin xyz="-0.0075 -0.01 0.067" rpy="${-pi/2.0} 0 0"/>
+  </joint>
+  <joint name="joint_2_arm1_to_up_base" type="revolute">
+    <parent link="up_base_link"/>
+    <child link="arm1_link"/>
+    <origin xyz="0 0 0.067" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+  <joint name="joint_3_arm2_to_arm1" type="revolute">
+    <parent link="arm1_link"/>
+    <child link="arm2_link"/>
+    <origin xyz="0.0265 0 0.3" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="${-pi/2.0 -pi/3.0}" upper="${pi/2.0 + pi/3.0}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+  <joint name="joint_4_wrist_to_arm2" type="revolute">
+    <parent link="arm2_link"/>
+    <child link="wrist_link"/>
+    <origin xyz="-0.0085 0 0.201" rpy="0 0 ${pi}"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-pi}" upper="${pi}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+  <joint name="joint_5_gripper_wrist_to_wrist_link" type="revolute">
+    <parent link="wrist_link"/>
+    <child link="gripper_wrist_link"/>
+    <origin xyz="-0.02540  0 0.09910" rpy="0 ${pi/2.0} ${pi}"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+  <joint name="joint_6_gripper_hand_to_gripper_wrist" type="revolute">
+    <parent link="gripper_wrist_link"/>
+    <child link="gripper_hand_link"/>
+    <origin xyz="-0.073 0 -0.02625" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+
+  <!-- /////////////////////////////////////////// GRIPPER ///////////////////////////////////////////////  -->
+  <xacro:include filename="gripper.urdf.xacro"/>
+
+  <!-- /////////////////////////////////////////// GAZEBO ///////////////////////////////////////////////  -->
+  <!-- plugin mounted with Detachable joint, check SDF world file in bringup! Method proprosed by doc -->
+  <!-- <gazebo>
+      <plugin filename="libgz-sim-detachable-joint-system.so" name="gz::sim::systems::DetachableJoint">
+          <parent_link>gripper_hand_link</parent_link>
+          <child_model>box</child_model>
+          <child_link>box_link</child_link>
+          <attach_topic>/box/attach</attach_topic>
+          <detach_topic>/box/detach</detach_topic>
+          <suppress_child_warning>true</suppress_child_warning>
+      </plugin>
+      <plugin filename="libgz-sim-detachable-joint-system.so" name="gz::sim::systems::DetachableJoint">
+          <parent_link>gripper_hand_link</parent_link>
+          <child_model>box_1</child_model>
+          <child_link>box1_link</child_link>
+          <attach_topic>/box1/attach</attach_topic>
+          <detach_topic>/box1/detach</detach_topic>
+          <suppress_child_warning>true</suppress_child_warning>
+          <preserveFixedJoint>true</preserveFixedJoint>
+      </plugin>
+  </gazebo> -->
+
+  <gazebo reference="gripper_hand_link">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <ros2_control name="arm_controller" type="system">
+        <hardware>
+            <!-- use first for onlymoveit second for gazebo sim -->
+            <!-- <plugin>mock_components/GenericSystem</plugin>  -->
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+
+        <joint name="joint_1_up_base_to_base"> 
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_2_arm1_to_up_base"> 
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_3_arm2_to_arm1">
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_4_wrist_to_arm2">
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_5_gripper_wrist_to_wrist_link">
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist">
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="joint_7_gripper_sprocket_to_gripper_main">
+            <command_interface name="position"/> 
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name ="joint_mimic_gripper_sprocket_right_to_sprocket_servo"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">-1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_sprocket_left_to_sprocket_servo"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_finger1_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_finger2_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_finger3_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">-1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_finger4_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">-1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_left_down_teeth_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">-1.0</param>
+        </joint>
+        <joint name ="joint_mimic_gripper_right_down_teeth_to_gripper_main"> 
+            <param name="mimic">joint_7_gripper_sprocket_to_gripper_main</param>
+            <param name="multiplier">1.0</param>
+        </joint>
+
+    </ros2_control>
+    
+
+</robot>

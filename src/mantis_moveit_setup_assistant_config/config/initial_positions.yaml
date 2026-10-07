@@ -1,0 +1,10 @@
+# Default initial positions for mantis's ros2_control fake system
+
+initial_positions:
+  joint_1_up_base_to_base: 0
+  joint_2_arm1_to_up_base: 0
+  joint_3_arm2_to_arm1: 0
+  joint_4_wrist_to_arm2: 0
+  joint_5_gripper_wrist_to_wrist_link: 0
+  joint_6_gripper_hand_to_gripper_wrist: 0
+  joint_7_gripper_sprocket_to_gripper_main: 0

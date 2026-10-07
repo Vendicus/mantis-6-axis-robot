@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\LINKS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+  <!-- gripper wrist link and main gripper link-->
+  <link name="gripper_wrist_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/gripper_wrist.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="-0.05 -0.01 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.04 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.070" xyz="-0.025 0 -0.02625" rpy="0 ${pi/2.0} ${pi}" ixx="37541.704" ixy="-1682.125" ixz="-4987.467" iyy="45042.135" iyz="-666.741" izz="25355.784"/>
+  </link>
+
+  <link name="gripper_hand_link">
+    <visual>
+      <origin xyz="-0.007 0.0085 0.024388" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/chwytak_hand.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="-0.025 0.01 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.01 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.070" xyz="-0.025 0.01  0" rpy="${pi} 0 ${pi/2.0}" ixx="${8923.156}" ixy="-0.083" ixz="-0.014" iyy="5569.97" iyz="14.451" izz="5454.186"/>
+  </link> 
+
+  <!-- gripper sprocket links -->
+  <xacro:macro name="sprocket_link" params="prefix">
+    <link name="${prefix}">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2.0} 0 0"/>
+        <geometry>
+          <mesh filename="package://mantis_description/meshes/gripper_sprocket.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="grey" />
+      </visual>
+      <collision>
+          <origin xyz="0 0.0015 0" rpy="${pi/2.0} 0 0"/>
+          <geometry>
+            <cylinder length="0.001" radius="0.005"/>
+          </geometry>
+      </collision>
+      <xacro:inertia m="0.015" xyz="0 0 0" rpy="0 0 0" ixx="${2e2}" ixy="0" ixz="0" iyy="${2e2}" iyz="0" izz="${2e2}"/>
+    </link>
+  </xacro:macro>
+
+  <xacro:sprocket_link prefix="gripper_sprocket_servo_link" />
+  <xacro:sprocket_link prefix="gripper_sprocket_finger_right_link" />
+  <xacro:sprocket_link prefix="gripper_sprocket_finger_left_link" />
+
+  <!-- gripper fingers links -->
+  <xacro:macro name="finger_link" params="prefix rpy" >
+    <link name="${prefix}">
+      <visual>
+        <origin xyz="0 0 0" rpy="${rpy}"/>
+        <geometry>
+          <mesh filename="package://mantis_description/meshes/grip_finger.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="white" />
+      </visual>
+      <collision>
+          <origin xyz="0 0 0.025" rpy="0 0 ${pi/2.0}"/>
+          <geometry>
+            <box size="0.001 0.007 0.05"/>
+          </geometry>
+      </collision>
+      <xacro:inertia m="0.003376" xyz="0 0 0.025" rpy="${pi/2.0} ${pi/2.0} 0" ixx="53.833" ixy="-0.003" ixz="0" iyy="1151.319" iyz="0" izz="1186.789"/>
+    </link>
+  </xacro:macro>
+  
+  <xacro:finger_link prefix="gripper_finger1_link" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+  <xacro:finger_link prefix="gripper_finger2_link" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+  <xacro:finger_link prefix="gripper_finger3_link" rpy="${pi} ${pi/2.0} ${pi/2.0}"/>
+  <xacro:finger_link prefix="gripper_finger4_link" rpy="${pi} ${pi/2.0} ${pi/2.0}"/>
+
+  <!-- teeth links -->
+  <link name="gripper_left_down_tooth_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/grip_tooth_left.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.01 0.012 0.01" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <box size="0.001 0.025 0.025"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.007548" xyz="0.004 0.007 -0.005" rpy="${pi/2.0} ${pi - pi/4.0} 0" ixx="530.538" ixy="-210.968" ixz="21.489" iyy="1087.856" iyz="33.966" izz="1289.774"/>
+  </link>
+  <link name="gripper_left_up_tooth_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/tooth_cover_left.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.01 -0.0035 -0.01" rpy="0 0 ${pi/2.0}"/>
+      <geometry>
+        <box size="0.005 0.02 0.025"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.004363" xyz="0.004 0.007 -0.005" rpy="${pi/2.0} ${0.75*pi} 0" ixx="253.323" ixy="-125.553" ixz="-17.442" iyy="586.836" iyz="-27.24" izz="766.36"/>
+  </link>
+
+  <link name="gripper_right_down_tooth_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/grip_tooth_right.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.01 0.012 -0.01" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <box size="0.001 0.025 0.025"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.007548" xyz="0.004 0.007 0.005" rpy="${pi/2.0} ${pi/2.0} 0" ixx="530.538" ixy="-210.968" ixz="21.489" iyy="1087.856" iyz="33.966" izz="1289.774"/>
+  </link>
+  <link name="gripper_right_up_tooth_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2.0} ${pi/2.0}"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/tooth_cover_right.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="0.01 -0.0035 0.01" rpy="0 0 ${pi/2.0}"/>
+      <geometry>
+        <box size="0.005 0.02 0.025"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.004363" xyz="0.004 0.007 0.005" rpy="${pi/2.0} ${pi/2.0} 0" ixx="253.323" ixy="-125.553" ixz="-17.442" iyy="586.836" iyz="-27.24" izz="766.36"/>
+  </link>
+
+  <!-- Up cover link -->
+  <link name="gripper_up_cover_link">
+    <visual>
+      <origin xyz="0.04 0.0084 0.025" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mantis_description/meshes/gripper_cover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="white" />
+    </visual>
+    <collision>
+      <origin xyz="-0.038 -0.032 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.03 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertia m="0.040585" xyz="-0.038 -0.032 0" rpy="0 0 0" ixx="20425.17"  ixy="-2151.655" ixz="-179.271" iyy="24033.968" iyz="-118.194" izz="17209.24"/>
+  </link>
+  
+  
+  
+  <!-- ///////////////////////////////////// JOINTS ///////////////////////////////////////////////  -->
+  <!-- Gripper sprocket joints with mimic-->
+  <joint name="joint_7_gripper_sprocket_to_gripper_main" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_sprocket_servo_link"/>
+    <origin xyz="-0.018831 -0.0156 0.00935" rpy="${pi} 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0" upper="${pi/4.0}" effort="10" velocity="1"/>
+  </joint>
+  <joint name="joint_mimic_gripper_sprocket_right_to_sprocket_servo" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_sprocket_finger_right_link"/>
+    <origin xyz="-0.03925 -0.01440 0.009733" rpy="0 ${-pi/20.0} 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="1.0"/>
+  </joint>
+  <joint name="joint_mimic_gripper_sprocket_left_to_sprocket_servo" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_sprocket_finger_left_link"/>
+    <origin xyz="-0.03925 -0.01440 -0.010962" rpy="0 0 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="-1.0"/>
+  </joint> 
+ 
+  
+  <!-- Gripper fingers joints mimic -->
+  <joint name="joint_mimic_gripper_finger1_to_gripper_main" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_finger1_link"/>
+    <origin xyz="-0.03925 -0.01 0.009738" rpy="0 ${-pi/2.0} 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="1.0"/>
+  </joint>
+  <joint name="joint_mimic_gripper_finger2_to_gripper_main" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_finger2_link"/>
+    <origin xyz="-0.03925 0 0.024738" rpy="0 ${-pi/2.0} 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="1.0"/>
+  </joint>
+  <joint name="joint_mimic_gripper_finger3_to_gripper_main" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_finger3_link"/>
+    <origin xyz="-0.03925 0 -0.025962" rpy="0 ${-pi/2.0} 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="-1.0"/>
+  </joint>
+  <joint name="joint_mimic_gripper_finger4_to_gripper_main" type="revolute">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_finger4_link"/>
+    <origin xyz="-0.03925 -0.01 -0.010962" rpy="0 ${-pi/2.0} 0"/> 
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="-1.0"/>
+  </joint>
+  
+  <!-- Gripper teeth joints -->
+  <joint name="joint_mimic_gripper_left_down_teeth_to_gripper_main" type="revolute">
+    <parent link="gripper_finger1_link"/>
+    <child link="gripper_left_down_tooth_link"/>
+    <origin xyz="0 -0.0075 0.05" rpy="0 ${-pi/2.0} 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="-1.0"/>
+  </joint>
+  <joint name="joint_fixed_gripper_left_up_teeth_to_gripper_main" type="fixed">
+    <parent link="gripper_left_down_tooth_link"/>
+    <child link="gripper_left_up_tooth_link"/>
+    <origin xyz="0 0.015 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="joint_mimic_gripper_right_down_teeth_to_gripper_main" type="revolute">
+    <parent link="gripper_finger4_link"/>
+    <child link="gripper_right_down_tooth_link"/>
+    <origin xyz="0 -0.0075 0.05" rpy="0 ${-pi/2.0} 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-pi/2.0}" upper="${pi/2.0}" effort="10" velocity="1"/>
+    <mimic joint="joint_7_gripper_sprocket_to_gripper_main" multiplier="1.0"/>
+  </joint>
+  <joint name="joint_fixed_gripper_right_up_teeth_to_gripper_main" type="fixed">
+    <parent link="gripper_right_down_tooth_link"/>
+    <child link="gripper_right_up_tooth_link"/>
+    <origin xyz="0 0.015 0" rpy="0 0 0"/>
+  </joint>  
+
+  <!-- cover joint -->
+  <joint name="joint_fixed_gripper_up_cover_to_gripper_main" type="fixed">
+    <parent link="gripper_hand_link"/>
+    <child link="gripper_up_cover_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
+</robot>

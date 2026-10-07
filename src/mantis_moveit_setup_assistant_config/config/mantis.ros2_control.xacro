@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="mantis_ros2_control" params="name initial_positions_file">
+        <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
+
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <!-- By default, set up controllers for simulation. This won't work on real hardware -->
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+            <joint name="joint_1_up_base_to_base">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_1_up_base_to_base']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_2_arm1_to_up_base">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_2_arm1_to_up_base']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_3_arm2_to_arm1">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_3_arm2_to_arm1']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_4_wrist_to_arm2">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_4_wrist_to_arm2']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_5_gripper_wrist_to_wrist_link">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_5_gripper_wrist_to_wrist_link']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_6_gripper_hand_to_gripper_wrist">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_6_gripper_hand_to_gripper_wrist']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_7_gripper_sprocket_to_gripper_main">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['joint_7_gripper_sprocket_to_gripper_main']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+
+            <!-- mimics joints -->
+            <joint name="joint_mimic_gripper_sprocket_right_to_sprocket_servo" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_mimic_gripper_sprocket_left_to_sprocket_servo" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_mimic_gripper_finger1_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_mimic_gripper_finger2_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_mimic_gripper_finger3_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="joint_mimic_gripper_finger4_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+
+            <joint name="joint_mimic_gripper_left_down_teeth_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+
+            <joint name="joint_mimic_gripper_right_down_teeth_to_gripper_main" type="mimic">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+
+
+        </ros2_control>
+    </xacro:macro>
+</robot>

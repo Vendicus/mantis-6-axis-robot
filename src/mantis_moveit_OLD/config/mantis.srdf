@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="mantis">
+    <group name="arm">
+        <joint name="joint_1_up_base_to_base"/>
+        <joint name="joint_2_arm1_to_up_base"/>
+        <joint name="joint_3_arm2_to_arm1"/>
+        <joint name="joint_4_wrist_to_arm2"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist"/>
+    </group>
+
+    <group name="gripper">
+        <joint name="joint_7_gripper_sprocket_to_gripper_main"/>
+    </group>
+
+    <group_state name="home" group="arm">
+        <joint name="joint_1_up_base_to_base" value="0"/>
+        <joint name="joint_2_arm1_to_up_base" value="0"/>
+        <joint name="joint_3_arm2_to_arm1" value="0"/>
+        <joint name="joint_4_wrist_to_arm2" value="0"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="0"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0"/>
+    </group_state>
+    <group_state name="pose_1" group="arm">
+        <joint name="joint_1_up_base_to_base" value="0.0"/>
+        <joint name="joint_2_arm1_to_up_base" value="0.78539"/>
+        <joint name="joint_3_arm2_to_arm1" value="-2.6179933333"/>
+        <joint name="joint_4_wrist_to_arm2" value="0.0"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="-0.17508844"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0.0"/>
+    </group_state>
+
+    <group_state name="home" group="gripper">
+        <joint name="joint_7_gripper_sprocket_to_gripper_main" value="0.8"/>
+    </group_state>
+
+    <disable_collisions link1="up_base_servo_cover_link" link2="arm1_link" reason="prevent self-collision between servo cover and arm"/>
+    <disable_collisions link1="up_base_servo_cover_link" link2="arm2_link" reason="prevent self-collision between servo cover and arm"/>
+    <disable_collisions link1="up_base_servo_cover_link" link2="wrist_link" reason="prevent self-collision between servo cover and wrist"/>    
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_right_down_tooth_link" reason="prevent self-collision between gripper teeth"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_finger1_link" reason="prevent self-collision between gripper teeth and finger"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_finger2_link" reason="prevent self-collision between gripper teeth and finger"/>    
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_left_down_tooth_link" reason="prevent self-collision between gripper teeth and finger"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_finger3_link" reason="prevent self-collision between gripper teeth and finger"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_finger4_link" reason="prevent self-collision between gripper teeth and finger"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_right_down_tooth_link" reason="prevent self-collision between gripper teeth and finger"/>
+    <disable_collisions link1="gripper_sprocket_servo_link" link2="gripper_up_cover_link" reason="prevent self-collision between sprocket servo and gripper cover"/>
+</robot>

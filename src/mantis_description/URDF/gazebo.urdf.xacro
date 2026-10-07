@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">  
+  <gazebo>
+    <plugin filename="gz_ros2_control-system"
+      name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find mantis_moveit_setup_assistant_config)/config/ros2_controllers.yaml</parameters>
+      <ros>
+        <remapping>~/robot_description:=/robot_description</remapping>
+      </ros>
+    </plugin>
+  </gazebo>
+</robot>

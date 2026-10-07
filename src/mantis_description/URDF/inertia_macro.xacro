@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+<!-- param in g mm^2 -->
+<xacro:macro name="inertia" params="m xyz rpy ixx ixy ixz iyy iyz izz">
+        <inertial>
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <mass value="${m}" />
+            <inertia ixx="${ixx/1000000000}" ixy="${ixy/1000000000}" ixz="${ixz/1000000000}" 
+                    iyy="${iyy/1000000000}" iyz="${iyz/1000000000}" izz="${izz/1000000000}" />
+        </inertial>
+</xacro:macro>
+
+</robot>

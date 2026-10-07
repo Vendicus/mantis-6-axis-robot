@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="mantis">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="arm">
+        <!-- <joint name="base_to_world"/> -->
+        <joint name="joint_1_up_base_to_base"/>
+        <joint name="joint_2_arm1_to_up_base"/>
+        <joint name="joint_3_arm2_to_arm1"/>
+        <joint name="joint_4_wrist_to_arm2"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist"/>
+    </group>
+    <group name="gripper">
+        <joint name="joint_7_gripper_sprocket_to_gripper_main"/>
+        <joint name="joint_fixed_gripper_up_cover_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_finger1_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_left_down_teeth_to_gripper_main"/>
+        <joint name="joint_fixed_gripper_left_up_teeth_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_finger2_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_finger3_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_finger4_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_right_down_teeth_to_gripper_main"/>
+        <joint name="joint_fixed_gripper_right_up_teeth_to_gripper_main"/>
+        <joint name="joint_mimic_gripper_sprocket_left_to_sprocket_servo"/>
+        <joint name="joint_mimic_gripper_sprocket_right_to_sprocket_servo"/>
+    </group>
+
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="folded" group="arm">
+        <joint name="joint_1_up_base_to_base" value="0"/>
+        <joint name="joint_2_arm1_to_up_base" value="0"/>
+        <joint name="joint_3_arm2_to_arm1" value="0"/>
+        <joint name="joint_4_wrist_to_arm2" value="0"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="0"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0"/>
+    </group_state>
+    <group_state name="home" group="arm">
+        <joint name="joint_1_up_base_to_base" value="0"/>
+        <joint name="joint_2_arm1_to_up_base" value="0.6335"/>
+        <joint name="joint_3_arm2_to_arm1" value="-2.589"/>
+        <joint name="joint_4_wrist_to_arm2" value="0"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="0.4599"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0"/>
+    </group_state>
+    <group_state name="box_1" group="arm">
+        <joint name="joint_1_up_base_to_base" value="-0.593412"/>
+        <joint name="joint_2_arm1_to_up_base" value="-0.855211"/>
+        <joint name="joint_3_arm2_to_arm1" value="-1.9548"/>
+        <joint name="joint_4_wrist_to_arm2" value="-0.628319"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="1.2566"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="-0.191986"/>
+    </group_state>
+    <group_state name="box_2" group="arm">
+        <joint name="joint_1_up_base_to_base" value="2.5307"/>
+        <joint name="joint_2_arm1_to_up_base" value="-0.837758"/>
+        <joint name="joint_3_arm2_to_arm1" value="-1.9897"/>
+        <joint name="joint_4_wrist_to_arm2" value="-0.645772"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="1.2217"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="-0.191986"/>
+    </group_state>
+
+    <group_state name="box_1_placed" group="arm">
+        <joint name="joint_1_up_base_to_base" value="-2.4958"/>
+        <joint name="joint_2_arm1_to_up_base" value="-0.785398"/>
+        <joint name="joint_3_arm2_to_arm1" value="-2.0071"/>
+        <joint name="joint_4_wrist_to_arm2" value="0.715585"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="1.2392"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0.20944"/>
+    </group_state>
+    <group_state name="box_2_placed" group="arm">
+        <joint name="joint_1_up_base_to_base" value="0.698132"/>
+        <joint name="joint_2_arm1_to_up_base" value="-0.767945"/>
+        <joint name="joint_3_arm2_to_arm1" value="-2.0246"/>
+        <joint name="joint_4_wrist_to_arm2" value="0.767945"/>
+        <joint name="joint_5_gripper_wrist_to_wrist_link" value="1.2566"/>
+        <joint name="joint_6_gripper_hand_to_gripper_wrist" value="0.20944"/>
+    </group_state>
+
+    <group_state name="gripper_box_closed" group="gripper">
+        <joint name="joint_7_gripper_sprocket_to_gripper_main" value="0.576"/>
+    </group_state>
+
+    <!-- passive joints -->
+    <passive_joint name="joint_mimic_gripper_finger1_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_finger2_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_finger3_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_finger4_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_left_down_teeth_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_sprocket_left_to_sprocket_servo" />
+    <passive_joint name="joint_mimic_gripper_right_down_teeth_to_gripper_main" />
+    <passive_joint name="joint_mimic_gripper_sprocket_right_to_sprocket_servo" />
+    
+
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="tcp" parent_link="gripper_wrist_link" group="gripper" parent_group="arm"/>
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="arm1_link" link2="arm2_link" reason="Adjacent"/>
+    <disable_collisions link1="arm1_link" link2="base_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_finger3_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_finger4_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_hand_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="up_base_link" reason="Adjacent"/>
+    <disable_collisions link1="arm1_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="arm1_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="base_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_finger3_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_finger4_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_hand_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="up_base_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="arm2_link" link2="wrist_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="up_base_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_finger3_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_finger4_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_hand_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_left_down_tooth_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger1_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_finger3_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_finger4_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_hand_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger2_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_finger4_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_hand_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger3_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_hand_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_right_down_tooth_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_finger4_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_left_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_left_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_sprocket_finger_left_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_sprocket_finger_right_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_sprocket_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_up_cover_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_hand_link" link2="gripper_wrist_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_hand_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_left_up_tooth_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_right_down_tooth_link" reason="Default"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_down_tooth_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_right_down_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_right_up_tooth_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_left_up_tooth_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_right_up_tooth_link" reason="Adjacent"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_down_tooth_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_sprocket_finger_left_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_right_up_tooth_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="gripper_sprocket_finger_right_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_left_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_right_link" link2="gripper_sprocket_servo_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_right_link" link2="gripper_up_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_right_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_right_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_finger_right_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_servo_link" link2="gripper_up_cover_link" reason="Default"/>
+    <disable_collisions link1="gripper_sprocket_servo_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_servo_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_sprocket_servo_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_up_cover_link" link2="gripper_wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_up_cover_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="gripper_wrist_link" link2="up_base_link" reason="Never"/>
+    <disable_collisions link1="gripper_wrist_link" link2="up_base_servo_cover_link" reason="Never"/>
+    <disable_collisions link1="gripper_wrist_link" link2="wrist_link" reason="Adjacent"/>
+    <disable_collisions link1="up_base_link" link2="up_base_servo_cover_link" reason="Adjacent"/>
+    <disable_collisions link1="up_base_link" link2="wrist_link" reason="Never"/>
+    <disable_collisions link1="up_base_servo_cover_link" link2="wrist_link" reason="Never"/>
+</robot>
