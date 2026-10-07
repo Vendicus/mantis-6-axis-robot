@@ -1,0 +1,1 @@
+Copyright © 2026 Aksamit Michał. All rights reserved. Code is shared only for presenation purpose. Copying, modyfing and especially commercial use is highly prohibited without knowledge of the author.
